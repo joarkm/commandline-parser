@@ -44,4 +44,14 @@ public class Main {
             }
         }
     }
+    /** Example output when run with arguments '-path C:\folder -recursive':
+     *  --------------------------------------------------
+     *  Options used:
+     *  option: -path 	 argument: C:\folder
+     *  Run with argument "C:\folder" for the path option
+     *  Flags used:
+     *  [-recursive]
+     *  Flag "recursive" used.
+     *  --------------------------------------------------
+     */
 }
