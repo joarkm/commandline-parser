@@ -11,8 +11,10 @@ import java.util.Set;
 interface ICommandLineParser {
 	boolean hasFlags();
 	boolean hasValidFlags();
+	boolean hasFlag(String flag);
 	boolean hasOptions();
 	boolean hasValidOptions();
+	String getArgument(String option);
 	Map<String, String> getOptions();
 	Set<String> getFlags();
 }
@@ -182,7 +184,12 @@ public class CommandLineParser implements ICommandLineParser {
 		boolean flagsValid = !(_flags.stream().anyMatch(flag -> !validFlags.contains(flag)));
 		return flagsValid;
 	}
-	
+
+	@Override
+	public boolean hasFlag(String flag) {
+		return _flags.contains(flag);
+	}
+
 	public boolean hasValidOptions()
 	{
 		if (_hasValidOptions != null)
@@ -195,7 +202,12 @@ public class CommandLineParser implements ICommandLineParser {
 		boolean optionsValid = !(_options.keySet().stream().anyMatch(opt -> !validOptions.contains(opt)));
 		return optionsValid;
 	}
-	
+
+	@Override
+	public String getArgument(String option) {
+		return _options.get(option);
+	}
+
 	public boolean hasFlags()
 	{
 		return _hasFlags;
