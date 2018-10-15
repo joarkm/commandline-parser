@@ -227,6 +227,15 @@ public class CommandLineParser implements ICommandLineParser {
 	{
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		String toStr = "CommandLineParser: {" + System.lineSeparator();
+		if (flagsSupported) toStr += '\t' + "_flags = " + _flags + System.lineSeparator();
+		if (optionsSupported) toStr+= '\t' + "_options = " + _options + System.lineSeparator();
+		toStr += "}";
+		return toStr;
+	}
 }
 
 
