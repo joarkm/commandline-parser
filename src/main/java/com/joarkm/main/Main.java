@@ -43,6 +43,8 @@ public class Main {
                 }
             }
         }
+        System.out.println("CommandLineParser.toString():");
+        System.out.println(commandLineParser);
     }
     /** Example output when run with arguments '-path C:\folder -recursive':
      *  --------------------------------------------------
@@ -52,6 +54,10 @@ public class Main {
      *  Flags used:
      *  [-recursive]
      *  Flag "recursive" used.
+     *  CommandLineParser: {
+     * 	    _flags = [-recursive]
+     * 	    _options = {-path=C:\test.txt}
+     * }
      *  --------------------------------------------------
      */
 }
