@@ -1,5 +1,7 @@
 package com.joarkm.commandline.input;
 
+import com.joarkm.util.StringUtils;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -36,22 +38,24 @@ public class CommandLineParser implements ICommandLineParser {
 	private boolean _hasFlags;
 	
 	/* --- Constructors ---- */
+	public CommandLineParser() {}
+
 	private CommandLineParser(String[] args) {
-		if (args == null || args.length == 0)
-			throw new IllegalArgumentException("The arguments array cannot be empty!");
-		this.args = Arrays.asList(args);
+
+		if (StringUtils.isNullOrEmpty(args))
+			this.args = Arrays.asList(args);
 	}
 	public CommandLineParser(String[] args, List<String> validOptions) {
 		this(args);
+		boolean noArgs = StringUtils.isNullOrEmpty(args);
 		if (validOptions == null || validOptions.isEmpty())
 			throw new IllegalArgumentException("validOptions cannot be null or empty");
 		optionsSupported = true;
 		this.validOptions = validOptions;
-		readOptions();
+		if (!noArgs) readOptions();
 	}
 	public CommandLineParser(String[] args, List<String> validOptions, List<String> validFlags) {
-		if (args == null || args.length == 0)
-			throw new IllegalArgumentException("The arguments array cannot be empty!");
+		boolean noArgs = StringUtils.isNullOrEmpty(args);
 		this.args = Arrays.asList(args);
 		if (validFlags == null || validFlags.isEmpty())
 			throw new IllegalArgumentException("validFlags cannot be null or empty");
@@ -61,10 +65,10 @@ public class CommandLineParser implements ICommandLineParser {
 		{
 			optionsSupported = true;
 			this.validOptions = validOptions;
-			readOptions();			
+			if (!noArgs) readOptions();
 		}
 		// Read flags depend on the valid options array, and must be run after that is created.
-		readFlags();
+		if (!noArgs) readFlags();
 	}
 	
 	private void readFlags()
@@ -100,9 +104,6 @@ public class CommandLineParser implements ICommandLineParser {
 	
 	private void readOptions()
 	{
-		if (_options != null)
-			return;
-		
 		Map<String, String> options = new HashMap<String, String>();
 		ListIterator<String> it = args.listIterator();
 		// Extract the options
@@ -226,6 +227,14 @@ public class CommandLineParser implements ICommandLineParser {
 	protected boolean isIgnored(String option)
 	{
 		return false;
+	}
+
+	public void parse(String[] args) {
+		_options = new HashMap<>();
+		_flags = new LinkedHashSet<>();
+		this.args = Arrays.asList(args);
+		if (optionsSupported) readOptions();
+		if (this.flagsSupported) readFlags();
 	}
 
 	@Override
